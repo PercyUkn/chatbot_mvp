@@ -1,0 +1,3 @@
+//smooth code
+jQuery(".sp-megamenu-parent li a").click(function(){return jQuery("html, body").animate({scrollTop:jQuery(jQuery.attr(this,"href")).offset().top},500),!1})
+//end smooth code
