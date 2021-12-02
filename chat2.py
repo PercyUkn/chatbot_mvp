@@ -1,8 +1,3 @@
-import random
-import json
-
-import torch
-
 from train2 import init_model
 
 # contexto = "La película empieza con una escena de la guerra contra las máquinas tras el 'Día del Juicio Final' en el año 2029, donde Sarah Connor (Linda Hamilton) narra los sucesos relatados en la película anterior y de como Skynet, al fracasar su plan, ha decidido enfrentar a John siendo este todavía un niño. A continuación, hay un salto a la actualidad de 1995. Un Terminator T-800 (Schwarzenegger) llega desnudo a través de un portal en el tiempo y entra a una cafetería en las afueras de Los Ángeles para robar la ropa, el arma y la moto a un motociclista. En otra parte de la ciudad, otro individuo desnudo (Robert Patrick), se materializa y asesina a un policía para robar su uniforme y su auto patrulla. Ambos comienzan a buscar a John Connor (Edward Furlong), ahora con 10 años que vive en Los Ángeles con sus padres adoptivos. John es muy rebelde y constantemente desobedece a sus tutores, luego que su madre Sarah fuera arrestada después de intentar hacer explotar una fábrica de computadoras siendo internada en el hospital psiquiátrico de Pescadero, donde es atendida por el Doctor Silberman (Earl Boen)."
