@@ -169,7 +169,7 @@ def init_dashboard(server):
     # Inicializar callbacks
     init_callback(dash_app)
 
-    return dash_app.server
+    return dash_app.server, dash_app
 
 
 def init_callback(app):
