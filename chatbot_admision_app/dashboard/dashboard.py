@@ -15,23 +15,30 @@ import matplotlib.pyplot as plt
 import dash.dependencies as dd
 from io import BytesIO
 import base64
+import dash_bootstrap_components as dbc
+from flask_login import current_user
+import dash_defer_js_import as dji
 
 
 # Para servir imágenes estáticas
 
-
+STATIC_PATH_DASHBOARD = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'assets')
 def init_dashboard(server):
     """Create a Plotly Dash dashboard."""
     dash_app = dash.Dash(
         server=server,
         routes_pathname_prefix='/dashapp/',
         external_stylesheets=[
+            dbc.themes.BOOTSTRAP,
             '/static/css_dashboard/custom-style.css',
             '/static/css_dashboard/s1-plotly.css',
+             # CDN de dash_bootstrap_components
         ],
-        assets_folder='/static/assets/'
+        assets_folder=STATIC_PATH_DASHBOARD,
+        #external_scripts=['/static/js_dashboard/99_custom-js.js']
     )
 
+    dash_app._favicon = ("favicon.ico")
     # Tabs style
     tab_style = {
         'borderBottom': '1px solid #d6d6d6',
@@ -50,8 +57,27 @@ def init_dashboard(server):
         'fontWeight': 'bold'
     }
 
+    navbar = dbc.NavbarSimple(
+        children=[
+            dbc.NavItem(
+                children=[
+                dbc.NavLink("Cerrar sesión", href="/logout", class_name="logout",id="logout_button"),
+                html.A(href="/logout")]
+                        ),
+        ],
+        brand="Equipo 12",
+        brand_href="#",
+        color="primary",
+        dark=True,
+    )
+
     # Create Dash Layout
     dash_app.layout = html.Div(children=[
+
+        # Navbar
+        html.Div(children=[
+            navbar
+        ], className="row flex display"),
         html.Div(children=[
 
             # Cabecera
@@ -162,8 +188,10 @@ def init_dashboard(server):
             ]),
 
         ]),
-
+        html.Article(dji.Import(src="/static/js_dashboard/99_custom-js.js"))
     ], id="mainContainer", style={'display': 'flex', 'flexDirection': 'column'})
+
+
 
     dash_app.title = "Dashboard - Chatbot Admisión"
     # Inicializar callbacks
@@ -212,7 +240,7 @@ def init_callback(app):
         data_chatbot = pd.read_sql("SELECT * from pregunta", con)
 
         # Pie
-        eficienciaCB = data_chatbot[['entendio','pregunta']]
+        eficienciaCB = data_chatbot[['entendio', 'pregunta']]
         eficienciaCB = eficienciaCB.groupby(['entendio']).count()
         eficienciaCB['Descripcion'] = ['Errores', 'Éxitos']
         eficienciaCB = eficienciaCB.rename(columns={'pregunta': 'Cantidad'})

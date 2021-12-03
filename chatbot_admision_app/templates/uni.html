@@ -31,6 +31,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='./css_UNI/layerslider.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='./css_UNI/css(1)') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='chat.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='auth.css') }}">
     <style>
         .sp-page-builder .page-content #section-id-1490303867479 {
             margin: 0px 0px 0px 0px;
@@ -228,23 +229,30 @@
     </style>
     <script type="text/javascript" src="{{ url_for('static', filename='js_UNI/analytics.js.descarga') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js_UNI/sdk.js.descarga') }}"></script>
-    <script id="facebook-jssdk" type="text/javascript" src="{{ url_for('static', filename='js_UNI/sdk.js(1).descarga') }}"></script>
+    <script id="facebook-jssdk" type="text/javascript"
+            src="{{ url_for('static', filename='js_UNI/sdk.js(1).descarga') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js_UNI/core.js.descarga') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js_UNI/jquery.min.js.descarga') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='js_UNI/jquery-noconflict.js.descarga') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='js_UNI/jquery-migrate.min.js.descarga') }}"></script>
+    <script type="text/javascript"
+            src="{{ url_for('static', filename='js_UNI/jquery-noconflict.js.descarga') }}"></script>
+    <script type="text/javascript"
+            src="{{ url_for('static', filename='js_UNI/jquery-migrate.min.js.descarga') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js_UNI/sppagebuilder.js.descarga') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='js_UNI/jquery.magnific-popup.min.js.descarga') }}"></script>
+    <script type="text/javascript"
+            src="{{ url_for('static', filename='js_UNI/jquery.magnific-popup.min.js.descarga') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js_UNI/bootstrap.min.js.descarga') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js_UNI/jquery.sticky.js.descarga') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js_UNI/main.js.descarga') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js_UNI/custom.js.descarga') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js_UNI/frontend-edit.js.descarga') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js_UNI/TweenMax.min.js.descarga') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='js_UNI/layerslider.kreaturamedia.js.descarga') }}"></script>
+    <script type="text/javascript"
+            src="{{ url_for('static', filename='js_UNI/layerslider.kreaturamedia.js.descarga') }}"></script>
     <style></style>
-    <script type="text/javascript" src="{{ url_for('static', filename='js_UNI/layerslider.transitions.js.descarga') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='js_UNI/layerslider.custom.transitions.js.descarga') }}"></script>
+    <script type="text/javascript"
+            src="{{ url_for('static', filename='js_UNI/layerslider.transitions.js.descarga') }}"></script>
+    <script type="text/javascript"
+            src="{{ url_for('static', filename='js_UNI/layerslider.custom.transitions.js.descarga') }}"></script>
     <script type="text/javascript">
 
 
@@ -853,7 +861,6 @@
 </div>
 
 
-
 <div class="body-wrapper ls-overflow-visible">
     <div class="body-innerwrapper ls-overflow-visible">
         <div class="nav-placeholder" style="height: inherit;"></div>
@@ -870,10 +877,14 @@
                             </div>
                         </div>
                     </div>
-                    <div id="sp-menu" class="col-xs-4 col-sm-9 col-md-9 hidden-md hidden-lg hidden-sm hidden-xs">
-                        <div class="sp-column "><a id="offcanvas-toggler" href="http://www.admision.uni.edu.pe/#"><i
+                    <div id="sp-menu" class="col-xs-4 col-sm-9 col-md-9">
+                        <!--<div class="sp-column "><a id="offcanvas-toggler" href="http://www.admision.uni.edu.pe/#"><i
                                 class="fa fa-bars"></i></a>
+                        </div>-->
+                        <div class="login-box">
+                            <a href="/login" class="social-button" id="google-connect"> <span>Iniciar sesión</span></a>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -1904,7 +1915,7 @@ quejas@admisionuni.edu.pe </span>
                                     <center><img
                                             src="{{ url_for('static', filename='images_UNI/ISO_9001-white.png') }}"
                                             alt="" width="150"
-                                                 height="57"></center><!-- END: Custom advanced (www.pluginaria.com) -->
+                                            height="57"></center><!-- END: Custom advanced (www.pluginaria.com) -->
                                 </div>
                             </div>
                         </div>
@@ -1979,59 +1990,59 @@ quejas@admisionuni.edu.pe </span>
 
 
 <div class="chat-bar-collapsible">
-        <button id="chat-button" type="button" class="collapsible">
-            <i id="chat-icon" style="color: #fff;" class="fa fa-fw fa-comments-o"></i>
-            ¡Chatea con nosotros!
-        </button>
+    <button id="chat-button" type="button" class="collapsible">
+        <i id="chat-icon" style="color: #fff;" class="fa fa-fw fa-comments-o"></i>
+        ¡Chatea con nosotros!
+    </button>
 
-        <div class="content">
-            <div class="full-chat-block">
-                <!-- Message Container -->
-                <div class="outer-container">
-                    <div class="chat-container">
-                        <!-- Messages -->
-                        <div id="chatbox">
-                            <h5 id="chat-timestamp"></h5>
-                            <p id="botStarterMessage" class="botText"><span>Loading...</span></p>
-                        </div>
+    <div class="content">
+        <div class="full-chat-block">
+            <!-- Message Container -->
+            <div class="outer-container">
+                <div class="chat-container">
+                    <!-- Messages -->
+                    <div id="chatbox">
+                        <h5 id="chat-timestamp"></h5>
+                        <p id="botStarterMessage" class="botText"><span>Loading...</span></p>
+                    </div>
 
-                        <!-- User input box -->
-                        <div class="chat-bar-input-block">
-                            <div id="userInput">
-                                <input id="textInput" class="input-box" type="text" name="msg"
-                                    placeholder="Escribe un mensaje">
-                                <p></p>
-                            </div>
-
-                            <div class="chat-bar-icons">
-                                <i id="chat-icon" style="color: crimson;" class="fa fa-fw fa-heart"
-                                    onclick="heartButton()"></i>
-                                <i id="chat-icon" style="color: #333;" class="fa fa-fw fa-send"
-                                    onclick="sendButton()"></i>
-                            </div>
-                        </div>
-
-                        <div id="chat-bar-bottom">
+                    <!-- User input box -->
+                    <div class="chat-bar-input-block">
+                        <div id="userInput">
+                            <input id="textInput" class="input-box" type="text" name="msg"
+                                   placeholder="Escribe un mensaje">
                             <p></p>
                         </div>
 
+                        <div class="chat-bar-icons">
+                            <i id="chat-icon" style="color: crimson;" class="fa fa-fw fa-heart"
+                               onclick="heartButton()"></i>
+                            <i id="chat-icon" style="color: #333;" class="fa fa-fw fa-send"
+                               onclick="sendButton()"></i>
+                        </div>
                     </div>
+
+                    <div id="chat-bar-bottom">
+                        <p></p>
+                    </div>
+
                 </div>
-
             </div>
-        </div>
 
+        </div>
     </div>
 
+</div>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='responses.js') }}" ></script>
-<script type="text/javascript" src="{{ url_for('static', filename='chat.js') }}" ></script>
+<script type="text/javascript" src="{{ url_for('static', filename='responses.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='chat.js') }}"></script>
 
 
-    <script>
-        $SCRIPT_ROOT = {{ request.script_root|tojson }};
-    </script>
-    <script type="text/javascript" src="{{ url_for('static', filename='app.js') }}"></script>
+<script>
+    $SCRIPT_ROOT = {{ request.script_root|tojson }};
+</script>
+<script type="text/javascript" src="{{ url_for('static', filename='app.js') }}"></script>
 
 </body>
 </html>

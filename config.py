@@ -15,8 +15,8 @@ class Config:
     FLASK_ENV = environ.get("FLASK_ENV")
     # FLASK_APP = "wsgi.py"
     # FLASK_ENV = "development"
-    # SECRET_KEY = environ.get("SECRET_KEY")
-
+    SECRET_KEY = environ.get("SECRET_KEY")
+    SQLALCHEMY_DATABASE_URI = environ.get("SQLALCHEMY_DATABASE_URI")
     # Assets
     # LESS_BIN = environ.get("LESS_BIN")
     # ASSETS_DEBUG = environ.get("ASSETS_DEBUG")
