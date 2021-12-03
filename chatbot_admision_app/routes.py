@@ -1,17 +1,19 @@
 """Routes for parent Flask app."""
+import flask
+import mysql
 from flask import render_template, request, jsonify
 from flask import current_app as app
-
+import os
 #from chat2 import get_response
 
 
-
+# Iniciar el modelo BERT / Cargar en memoria
 def init_model():
     from transformers import AutoTokenizer, AutoModelForQuestionAnswering, pipeline
     the_model = 'mrm8488/distill-bert-base-spanish-wwm-cased-finetuned-spa-squad2-es'
     tokenizer = AutoTokenizer.from_pretrained(the_model, do_lower_case=False)
     model = AutoModelForQuestionAnswering.from_pretrained(the_model)
-    # Cargar conexto aquí
+    # TODO: Cargar contexto aquí
     nlp = pipeline('question-answering', model=model, tokenizer=tokenizer)
     return nlp;
 
@@ -73,14 +75,58 @@ El Concurso de Admisión consiste en la evaluación de conocimientos, aptitudes,
 
 nlp = init_model();
 
+# Obtener respuesta del modelo BERT
 def get_response(msg):
     response = nlp({'question': msg, 'context': contexto_total})
     print(response)
-    if response['score'] > 0.0001:  # Cuándo la probabilidad de haber respondido satisfactoriamente sea mayor a 10%
-        return response['answer']
-    else:
-        return "No estoy muy seguro de mi respuesta"
+    if response['score'] < 0.0001:  # Cuándo la probabilidad de haber respondido satisfactoriamente sea mayor a 10%
+        response['answer'] = "No estoy muy seguro de mi respuesta"
+    return response
 
+
+def conexion():
+    #cnx = mysql.connector.connect(user='u650849267_chatbot', password='Chatbot1',
+    #                              host='45.93.101.1',
+    #                              database='u650849267_chatbot')
+
+    cnx = mysql.connector.connect(user='chatbot_app', password='analitica_datos_UNI_E12',
+                                  host='127.0.0.1',
+                                  database='chatbot_admision')
+    return cnx
+
+
+def inserta(json_data):
+    # json_data = json.loads(json_text)
+
+    preg = json_data['pregunta']
+    resp_object = json_data["respuesta"]
+    score = resp_object['score']
+    start = resp_object['start']
+    end = resp_object['end']
+    answer = resp_object['answer']
+    entendio = False
+    # Umbral de aceptación
+    if (score > 0.002):
+        entendio = True
+
+    cnx = conexion()
+    cursor = cnx.cursor()
+    add_data = ("INSERT INTO pregunta "
+                "(pregunta, entendio)"
+                "VALUES (%s, %s)")
+    value_data = (preg, entendio)
+    cursor.execute(add_data, value_data)
+    last_id = cursor.lastrowid
+
+    add_data = ("INSERT INTO respuesta "
+                "(score, start, end, answer, id_pregunta)"
+                "VALUES (%s, %s, %s, %s, %s)")
+    value_data = (score, start, end, answer, last_id)
+    cursor.execute(add_data, value_data)
+    cnx.commit()
+    # cnx.rollback()
+    cursor.close()
+    cnx.close()
 
 
 @app.get("/")
@@ -92,6 +138,18 @@ def index_get():
 def predict():
     text = request.get_json().get("message")
     # TODO: Validar texto
-    response = get_response(text)
+    response_object = get_response(text)
+    response = response_object['answer']
+
+    # TODO: bd.save({'pregunta':text,'respuesta':response})
+    datos_bd = {'pregunta': text, 'respuesta': response_object}
+    inserta(datos_bd)
     message = {"answer": response}
     return jsonify(message)
+
+# Cargar/servir recursos estáticos (imágenes para el dashboard)
+STATIC_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static/assets')
+@app.route('/static/assets/<resource>')
+def serve_static(resource):
+    return flask.send_from_directory(STATIC_PATH, resource)
+
