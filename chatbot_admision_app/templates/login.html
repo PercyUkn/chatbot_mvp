@@ -22,12 +22,12 @@
                 <div id="navbarMenuHeroA" class="navbar-menu">
                     <div class="navbar-end">
                         <a href="{{ url_for('index_get') }}" class="navbar-item">
-                            Chatbot
+                            Volver al Chatbot
                         </a>
                         {% if not current_user.is_authenticated %}
-                        <a href="{{ url_for('auth.login') }}" class="navbar-item">
+                       <!-- <a href="{{ url_for('auth.login') }}" class="navbar-item">
                             Iniciar sesión
-                        </a>
+                        </a> -->
                         {% endif %}
                         {% if current_user.is_authenticated %}
                         <a href="{{ url_for('auth.logout') }}" class="navbar-item">

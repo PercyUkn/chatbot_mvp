@@ -882,7 +882,12 @@
                                 class="fa fa-bars"></i></a>
                         </div>-->
                         <div class="login-box">
+                             {% if not current_user.is_authenticated %}
                             <a href="/login" class="social-button" id="google-connect"> <span>Iniciar sesión</span></a>
+                            {%  endif %}
+                            {% if  current_user.is_authenticated %}
+                            <a href="/dashapp" class="social-button" id="google-connect"> <span>Ir al dahsboard</span></a>
+                            {%  endif %}
                         </div>
 
                     </div>
