@@ -87,7 +87,7 @@ def inserta(json_data,conexion_switch=2):
     cnx.close()
 
 
-contexto = lee_contexto()
+contexto = lee_contexto(1)
 print(contexto)
 # TODO: CARGAR A BASE DE DATOS
 contexto_total = """La tasa de selectividad o admisión es de un ingresante por cada nueve postulantes. 
@@ -230,7 +230,7 @@ def predict():
 
     # TODO: bd.save({'pregunta':text,'respuesta':response})
     datos_bd = {'pregunta': text, 'respuesta': response_object}
-    inserta(datos_bd,1) # 1: BD en VPS/ 2: BD local
+    inserta(datos_bd,2) # 1: BD en VPS/ 2: BD local
     message = {"answer": response}
     return jsonify(message)
 

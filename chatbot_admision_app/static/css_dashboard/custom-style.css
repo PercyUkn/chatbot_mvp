@@ -1,26 +1,26 @@
 
 
 body {
-  background-color: #192444;
+  background-color: #541414;
   margin: 5%;
 }
 
 .card_container {
   border-radius: 5px;
-  background-color: #1f2c56;
+  background-color: #71080D;
   margin: 16px;
   padding: 15px;
   position: relative;
-  box-shadow: 2px 2px 2px #1f2c56;
+  box-shadow: 2px 2px 2px #71080D;
 }
 
 .create-container {
   border-radius: 5px;
-  background-color: #1f2c56;
+  background-color: #71080D;
   margin: 15px 15px 15px 2%;
   padding: 15px;
   position: relative;
-  box-shadow: 2px 2px 2px #1f2c56;
+  box-shadow: 2px 2px 2px #71080D;
 }
 
 .create_container1 {
@@ -105,14 +105,14 @@ font-size: 20px;
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #1f2c56 !important;
+  background: #422729 !important;
   border-radius: 10px !important;
   display: block !important;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #192444;
+  background: #8d4338;
 }
 
 /* Handle on hover */
@@ -120,3 +120,6 @@ font-size: 20px;
   background: white !important;
 }
 
+.navbar-brand {
+  font-size: 2rem
+}

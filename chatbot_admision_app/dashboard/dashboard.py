@@ -42,7 +42,7 @@ def init_dashboard(server):
     # Tabs style
     tab_style = {
         'borderBottom': '1px solid #d6d6d6',
-        'backgroundColor': '#0B1222',
+        'backgroundColor': '#422729',
         'padding': '6px',
         'color': 'white',
 
@@ -51,10 +51,15 @@ def init_dashboard(server):
     tab_selected_style = {
         'borderTop': '1px solid #d6d6d6',
         'borderBottom': '1px solid #d6d6d6',
-        'backgroundColor': '#119DFF',
+        'backgroundColor': '#422729',
         'color': 'white',
         'padding': '6px',
         'fontWeight': 'bold'
+    }
+
+    banner_style = {
+        'border': '1px solid #d6d6d6',
+        'fontSize': '20px'
     }
 
     navbar = dbc.NavbarSimple(
@@ -67,8 +72,9 @@ def init_dashboard(server):
         ],
         brand="Equipo 12",
         brand_href="#",
-        color="primary",
+        color="#422729",
         dark=True,
+        style=banner_style
     )
 
     # Create Dash Layout
@@ -102,7 +108,7 @@ def init_dashboard(server):
                 ], className="one-third column", id="title"),
 
                 html.Div([
-                    html.Img(src="/static/assets/uni.png",
+                    html.Img(src="/static/assets/uni_admision.png",
                              title="OCAD UNI",
                              style={
                                  "height": "150px",
@@ -175,7 +181,7 @@ def init_dashboard(server):
                         # Nube de palabras
                         html.Div([
 
-                            html.H5("Palabras más usadas", style={"marginBottom": '0px', 'color': 'white'}),
+                            html.H5("Palabras más usadas", style={"marginBottom": '0px', 'color': 'black'}),
                             html.Img(title="Nube de palabras", id="wordcloud_CB"),
 
                         ], className="card_container twelve columns", style={'textAlign': 'center'}),
@@ -203,20 +209,20 @@ def init_dashboard(server):
 def init_callback(app):
     # Utilitarias
 
-    def layout_factory(title, color='#1f2c56'):
+    def layout_factory(title, color='#D5D0CA'):
         layout = go.Layout(
             title=dict(text=title, y=0.92, x=0.5, xanchor='center', yanchor='top'),
             font=dict(color='white'),
             hovermode='closest',
             margin=dict(r=0),
-            titlefont={'color': 'white', 'size': 20},
-            paper_bgcolor='#1f2c56',
-            plot_bgcolor='#1f2c56',
+            titlefont={'color': "#151515", 'size': 20},
+            paper_bgcolor=color,
+            plot_bgcolor=color,
             legend=dict(orientation='v', bgcolor=color, xanchor='center', x=0.5, y=-0.5)
         )
         return layout
 
-    def trace_patch_factory(color='#8cf781'):
+    def trace_patch_factory(color='#636EFA'):
         patch = dict(
             marker_color=color
         )
@@ -263,11 +269,11 @@ def init_callback(app):
 
         fig_fechas_histogram.update_layout(
             xaxis=dict(title='<b>Fecha y Hora</b>',
-                       color='white',
+                       color='black',
                        showline=True,
                        showgrid=True),
             yaxis=dict(title='<b>Frecuencia</b>',
-                       color='white',
+                       color='black',
                        showline=True,
                        showgrid=True),
         )

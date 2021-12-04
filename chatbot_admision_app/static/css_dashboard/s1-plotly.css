@@ -414,11 +414,11 @@ there.
 
   .card_container{
     border-radius: 5px;
-    background-color: #1f2c56;
+    background-color: #D5D0CA;
     margin-left: 2%;
     padding: 15px;
     position: relative;
-    box-shadow: 2px 2px 2px #1f2c56;
+    box-shadow: 2px 2px 2px #D5D0CA;
 }
   .create-container{
     margin-left: 2%;
