@@ -20,6 +20,21 @@ from flask_login import current_user
 import dash_defer_js_import as dji
 
 
+
+
+def conexion(conexion_switch = 2):
+    import mysql
+    import mysql.connector
+    if conexion_switch == 1:
+        cnx = mysql.connector.connect(user='u650849267_chatbot', password='Chatbot1',
+                                  host='45.93.101.1',
+                                  database='u650849267_chatbot')
+    elif conexion_switch == 2:
+        cnx = mysql.connector.connect(user='chatbot_app', password='analitica_datos_UNI_E12',
+                                  host='127.0.0.1',
+                                  database='chatbot_admision')
+    return cnx
+
 # Para servir imágenes estáticas
 
 STATIC_PATH_DASHBOARD = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'assets')
@@ -236,13 +251,8 @@ def init_callback(app):
                   Input('interval-component', 'n_intervals'))
     def update_chatbot(n):
         print(n)
-        # con = mysql.connector.connect(user='u650849267_chatbot', password='Chatbot1',
-        #                              host='45.93.101.1',
-        #                              database='u650849267_chatbot')
+        con = conexion(1) # 1 para conexión con VPS/ 2 para conexión con Local
 
-        con = mysql.connector.connect(user='chatbot_app', password='analitica_datos_UNI_E12',
-                                      host='127.0.0.1',
-                                      database='chatbot_admision')
         data_chatbot = pd.read_sql("SELECT * from pregunta", con)
 
         # Pie
