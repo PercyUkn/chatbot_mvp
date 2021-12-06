@@ -1,3 +1,5 @@
+from collections import Counter
+
 import dash
 from dash import html, callback
 import os
@@ -170,12 +172,12 @@ def init_dashboard(server):
 
                     # Chatbot (Pie y Barras)
                     html.Div([
-                        # Pie del chatbot
+                        # Pie días de uso
                         html.Div([
                             dcc.Graph(  # figure=fig_duration_box,
                                 className="dcc-compon",
                                 config={'displayModeBar': 'hover'},
-                                id="pie_efic_chatbot")
+                                id="pie_dias_chatbot")
                         ], className="card_container six columns"),
 
                         # Histograma de uso
@@ -192,7 +194,24 @@ def init_dashboard(server):
                         )
                     ], className="row flex display"),
 
-                    # KPI Score Promedio y Line chart score
+                    # Pie sobre eficacia y Line chart score
+                    html.Div([
+                        # Pie sobre eficacia
+                        html.Div([
+                            dcc.Graph(  # figure=fig_duration_box,
+                                className="dcc-compon",
+                                config={'displayModeBar': 'hover'},
+                                id="pie_efic_chatbot")
+                        ], className="card_container six columns"),
+                        html.Div([
+                            dcc.Graph(
+                                className="dcc-compon",
+                                config={'displayModeBar': 'hover'},
+                                id="line_chart_score")
+                        ], className="card_container six columns"),
+                    ], className="row flex display"),
+
+                    # KPI Score Promedio y KPI Eficacia
                     html.Div([
                         # KPI Score Promedio
                         html.Div([
@@ -200,12 +219,12 @@ def init_dashboard(server):
                             dcc.Graph(id="mean_score_kpi", config={'displayModeBar': False}, className="dcc-compon",
                                       style={'marginTop': '20px'}),
                         ], className="card_container six columns", style={'textAlign': 'center'}),
+                        # KPI Score Eficacia
                         html.Div([
-                            dcc.Graph(
-                                className="dcc-compon",
-                                config={'displayModeBar': 'hover'},
-                                id="line_chart_score")
-                        ], className="card_container six columns"),
+                            # html.H5("Score de predicción promedio", style={"marginBottom": '0px', 'color': 'black'}),
+                            dcc.Graph(id="eficacia_kpi", config={'displayModeBar': False}, className="dcc-compon",
+                                      style={'marginTop': '20px'}),
+                        ], className="card_container six columns", style={'textAlign': 'center'}),
                     ], className="row flex display"),
 
                     # KPI Costo, Vacantes, Fecha, Tema
@@ -232,6 +251,17 @@ def init_dashboard(server):
                         ], className="card_container three columns", style={'textAlign': 'center'}),
                     ], className="row flex display"),
 
+                    # Pie: Chatbot por categorías
+                    html.Div([
+                        # Pie del chatbot por categorías
+                        html.Div([
+                            dcc.Graph(  # figure=fig_duration_box,
+                                className="dcc-compon",
+                                config={'displayModeBar': 'hover'},
+                                id="fig_pie_categorias_chatbot")
+                        ], className="card_container twelve columns"),
+                    ], className="row flex display"),
+
                     # KPI Puntaje, General, Otros
                     html.Div([
                         # KPI Puntaje
@@ -251,19 +281,34 @@ def init_dashboard(server):
                         ], className="card_container four columns", style={'textAlign': 'center'}),
                     ], className="row flex display"),
 
+                    # Pie: Chatbot por especialidad
+                    html.Div([
+                        # Pie del chatbot por especialidad
+                        html.Div([
+                            dcc.Graph(  # figure=fig_duration_box,
+                                className="dcc-compon",
+                                config={'displayModeBar': 'hover'},
+                                id="fig_pie_especialidad_chatbot")
+                        ], className="card_container twelve columns"),
+                    ], className="row flex display"),
+
                     # Nube de palabras
                     html.Div([
-                        # Nube de palabras
+                        # Nube de palabras: Categorías
                         html.Div([
 
-                            html.H5("Palabras más usadas", style={"marginBottom": '0px', 'color': 'black'}),
-                            html.Img(title="Nube de palabras", id="wordcloud_CB"),
+                            html.H5("Categorías más preguntadas", style={"marginBottom": '0px', 'color': 'black'}),
+                            html.Img(title="Nube de palabras - Categorías", id="wordcloud_categorias"),
 
-                        ], className="card_container twelve columns", style={'textAlign': 'center'}),
-                        # Boton refresh
-                        #  html.Div([
-                        #      html.A(html.Button('Actualizar', id="refresh"), href='/'),
-                        #  ], className="card_container two columns", style={'textAlign': 'center'}),
+                        ], className="card_container six columns", style={'textAlign': 'center'}),
+                        # Nube de palabras: Especialidades
+                        html.Div([
+
+                            html.H5("Especialidades más preguntadas", style={"marginBottom": '0px', 'color': 'black'}),
+                            html.Img(title="Nube de palabras - Especialidades", id="wordcloud_especialidades"),
+
+                        ], className="card_container six columns", style={'textAlign': 'center'}),
+
                     ], className="row flex display"),
                 ]),
             ]),
@@ -353,14 +398,14 @@ def init_callback(app):
         quimica_intent = ["química", ]
 
         primera_columna_classifiers = [
-            {"category": "duracion", "classifier": duracion_intent},
-            {"category": "costo", "classifier": costo_intent},
-            {"category": "vacantes", "classifier": vacantes_intent},
-            {"category": "fechas", "classifier": fechas_intent},
-            {"category": "puntaje", "classifier": puntajes_intent},
-            {"category": "temas", "classifier": temas_examen_intent},
-            {"category": "info general", "classifier": general_info_intent},
-            {"category": "especialidades", "classifier": especialidades_intent}
+            {"category": "Duración", "classifier": duracion_intent},
+            {"category": "Costo", "classifier": costo_intent},
+            {"category": "Vacantes", "classifier": vacantes_intent},
+            {"category": "Fechas", "classifier": fechas_intent},
+            {"category": "Puntaje", "classifier": puntajes_intent},
+            {"category": "Temas", "classifier": temas_examen_intent},
+            {"category": "Info general", "classifier": general_info_intent},
+            {"category": "Especialidades", "classifier": especialidades_intent}
         ]
 
         segunda_columna_classifiers = [
@@ -405,11 +450,11 @@ def init_callback(app):
                     if intent in pregunta.lower():
                         category = classifier["category"]
 
-                        if not category == "especialidades" and not categoria_asignada:
+                        if not category == "Especialidades" and not categoria_asignada:
                             df.iloc[i, 4] = category
                             categoria_asignada = True
 
-                        if category == "especialidades":
+                        if category == "Especialidades":
                             # Por qué especialidad pregunta?
                             for classifier_2 in segunda_columna_classifiers:
                                 for intent_2 in classifier_2["classifier"]:
@@ -428,10 +473,10 @@ def init_callback(app):
         df_aux = df.query("especialidad == @especialidad")
         return (df_aux["id"].count() / df["id"].count())
 
-    def layout_factory(title, color='#D5D0CA'):
+    def layout_factory(title, color='#D5D0CA',color_font="black"):
         layout = go.Layout(
             title=dict(text=title, y=0.92, x=0.5, xanchor='center', yanchor='top'),
-            font=dict(color='white'),
+            font=dict(color=color_font),
             hovermode='closest',
             margin=dict(r=0),
             titlefont={'color': "#151515", 'size': 20},
@@ -454,11 +499,10 @@ def init_callback(app):
     @app.callback(Output('pie_efic_chatbot', 'figure'), Output('histograma_uso_chatbot', 'figure'),
                   Output('mean_score_kpi', 'figure'), Output('line_chart_score', 'figure'),
                   Output('costo_kpi', 'figure'),Output('vacante_kpi', 'figure'),
-                  Output('fecha_kpi', 'figure'),Output('tema_kpi', 'figure'),
-                  #Output('puntaje_kpi', 'figure'),
-                  # Output('general_kpi', 'figure'),
-                  #Output('otros_kpi', 'figure'),
-                  Input('interval-component', 'n_intervals'))
+                  Output('fecha_kpi', 'figure'),Output('tema_kpi', 'figure'),Output('puntaje_kpi', 'figure'),  Output('general_kpi', 'figure'),
+                  Output('otros_kpi', 'figure'), Output('fig_pie_categorias_chatbot', 'figure'),
+                  Output('fig_pie_especialidad_chatbot', 'figure'), Output('wordcloud_categorias', 'src'), Output('wordcloud_especialidades', 'src'),
+                  Output('pie_dias_chatbot','figure'),Output('eficacia_kpi','figure'),Input('interval-component', 'n_intervals'))
     def update_chatbot(n):
         print(n)
         con = conexion(1)  # 1 para conexión con VPS/ 2 para conexión con Local
@@ -513,7 +557,23 @@ def init_callback(app):
                 suffix=' %',
                 font={'size': 35}),
             domain={'y': [0, 1], 'x': [0, 1]},
-        ))
+        ),
+            layout=go.Layout(
+                title={
+                    'text': 'Score en IMDb',
+                    'y': 0.9,
+                    'x': 0.5,
+                    'xanchor': 'center',
+                    'yanchor': 'top',
+                    'font': {'size': 25},
+                    'pad': {'b': 20}
+                },
+                font=dict(color='black'),
+                paper_bgcolor='#1f2c56',
+                plot_bgcolor='#1f2c56',
+                height=150,
+            )
+        )
         mean_score_kpi.update_layout(
             layout_factory(title="Score de predicción promedio"))
 
@@ -536,7 +596,7 @@ def init_callback(app):
         data_preguntas_chatbot = clasificador_pregunta(data_preguntas_chatbot)
 
         # KPI: Costo
-        costo_porcentaje = porcentaje_categoria(data_preguntas_chatbot,"costo")
+        costo_porcentaje = porcentaje_categoria(data_preguntas_chatbot,"Costo")
         costo_kpi = go.Figure(data=go.Indicator(
             mode="number",
             # delta={'reference': max_likes},
@@ -545,12 +605,28 @@ def init_callback(app):
                 suffix=' %',
                 font={'size': 35}),
             domain={'y': [0, 1], 'x': [0, 1]},
-        ))
+        ),
+            layout=go.Layout(
+                title={
+                    'text': 'Score en IMDb',
+                    'y': 0.9,
+                    'x': 0.5,
+                    'xanchor': 'center',
+                    'yanchor': 'top',
+                    'font': {'size': 25},
+                    'pad': {'b': 20}
+                },
+                font=dict(color='black'),
+                paper_bgcolor='#1f2c56',
+                plot_bgcolor='#1f2c56',
+                height=150,
+            )
+        )
         costo_kpi.update_layout(
-            layout_factory(title="% de consultas sobre costos"))
+            layout_factory(title="% de consultas sobre costos",color_font="black"))
 
         # KPI: Vacantes
-        vacante_porcentaje = porcentaje_categoria(data_preguntas_chatbot,"vacantes")
+        vacante_porcentaje = porcentaje_categoria(data_preguntas_chatbot,"Vacantes")
         vacante_kpi = go.Figure(data=go.Indicator(
             mode="number",
             # delta={'reference': max_likes},
@@ -559,12 +635,28 @@ def init_callback(app):
                 suffix=' %',
                 font={'size': 35}),
             domain={'y': [0, 1], 'x': [0, 1]},
-        ))
+        ),
+            layout=go.Layout(
+                title={
+                    'text': 'Score en IMDb',
+                    'y': 0.9,
+                    'x': 0.5,
+                    'xanchor': 'center',
+                    'yanchor': 'top',
+                    'font': {'size': 25},
+                    'pad': {'b': 20}
+                },
+                font=dict(color='black'),
+                paper_bgcolor='#1f2c56',
+                plot_bgcolor='#1f2c56',
+                height=150,
+            )
+        )
         vacante_kpi.update_layout(
-            layout_factory(title="% de consultas sobre vacantes"))
+            layout_factory(title="% de consultas por vacantes",color_font="black"))
 
         # KPI: Fecha
-        fecha_porcentaje = porcentaje_categoria(data_preguntas_chatbot,"fechas")
+        fecha_porcentaje = porcentaje_categoria(data_preguntas_chatbot,"Fechas")
         fecha_kpi = go.Figure(data=go.Indicator(
             mode="number",
             # delta={'reference': max_likes},
@@ -573,12 +665,28 @@ def init_callback(app):
                 suffix=' %',
                 font={'size': 35}),
             domain={'y': [0, 1], 'x': [0, 1]},
-        ))
+        ),
+            layout=go.Layout(
+                title={
+                    'text': 'Score en IMDb',
+                    'y': 0.9,
+                    'x': 0.5,
+                    'xanchor': 'center',
+                    'yanchor': 'top',
+                    'font': {'size': 25},
+                    'pad': {'b': 20}
+                },
+                font=dict(color='black'),
+                paper_bgcolor='#1f2c56',
+                plot_bgcolor='#1f2c56',
+                height=150,
+            )
+        )
         fecha_kpi.update_layout(
-            layout_factory(title="% de consultas sobre fechas"))
+            layout_factory(title="% de consultas sobre fechas",color_font="black"))
 
         # KPI: Tema
-        tema_porcentaje = porcentaje_categoria(data_preguntas_chatbot,"temas")
+        tema_porcentaje = porcentaje_categoria(data_preguntas_chatbot,"Temas")
         tema_kpi = go.Figure(data=go.Indicator(
             mode="number",
             # delta={'reference': max_likes},
@@ -587,12 +695,28 @@ def init_callback(app):
                 suffix=' %',
                 font={'size': 35}),
             domain={'y': [0, 1], 'x': [0, 1]},
-        ))
+        ),
+            layout=go.Layout(
+                title={
+                    'text': 'Score en IMDb',
+                    'y': 0.9,
+                    'x': 0.5,
+                    'xanchor': 'center',
+                    'yanchor': 'top',
+                    'font': {'size': 25},
+                    'pad': {'b': 20}
+                },
+                font=dict(color='black'),
+                paper_bgcolor='#1f2c56',
+                plot_bgcolor='#1f2c56',
+                height=150,
+            )
+        )
         tema_kpi.update_layout(
-            layout_factory(title="% de consultas sobre temas"))
+            layout_factory(title="% de consultas sobre temas",color_font="black"))
 
         # KPI: Puntaje
-        puntaje_porcentaje = porcentaje_categoria(data_preguntas_chatbot, "puntaje")
+        puntaje_porcentaje = porcentaje_categoria(data_preguntas_chatbot, "Puntaje")
         puntaje_kpi = go.Figure(data=go.Indicator(
             mode="number",
             # delta={'reference': max_likes},
@@ -601,12 +725,28 @@ def init_callback(app):
                 suffix=' %',
                 font={'size': 35}),
             domain={'y': [0, 1], 'x': [0, 1]},
-        ))
+        ),
+            layout=go.Layout(
+                title={
+                    'text': 'Score en IMDb',
+                    'y': 0.9,
+                    'x': 0.5,
+                    'xanchor': 'center',
+                    'yanchor': 'top',
+                    'font': {'size': 25},
+                    'pad': {'b': 20}
+                },
+                font=dict(color='black'),
+                paper_bgcolor='#1f2c56',
+                plot_bgcolor='#1f2c56',
+                height=150,
+            )
+        )
         puntaje_kpi.update_layout(
-            layout_factory(title="% de consultas sobre el puntaje"))
+            layout_factory(title="% de consultas sobre el puntaje",color_font="black"))
 
         # KPI: General
-        general_porcentaje = porcentaje_categoria(data_preguntas_chatbot, "info general")
+        general_porcentaje = porcentaje_categoria(data_preguntas_chatbot, "Info general")
         general_kpi = go.Figure(data=go.Indicator(
             mode="number",
             # delta={'reference': max_likes},
@@ -615,9 +755,25 @@ def init_callback(app):
                 suffix=' %',
                 font={'size': 35}),
             domain={'y': [0, 1], 'x': [0, 1]},
-        ))
+        ),
+            layout=go.Layout(
+                title={
+                    'text': 'Score en IMDb',
+                    'y': 0.9,
+                    'x': 0.5,
+                    'xanchor': 'center',
+                    'yanchor': 'top',
+                    'font': {'size': 25},
+                    'pad': {'b': 20}
+                },
+                font=dict(color='black'),
+                paper_bgcolor='#1f2c56',
+                plot_bgcolor='#1f2c56',
+                height=150,
+            )
+        )
         general_kpi.update_layout(
-            layout_factory(title="% de consultas generales"))
+            layout_factory(title="% de consultas generales",color_font="black"))
 
         # KPI: Otros
         otros_porcentaje = porcentaje_categoria(data_preguntas_chatbot, "Otros")
@@ -629,11 +785,165 @@ def init_callback(app):
                 suffix=' %',
                 font={'size': 35}),
             domain={'y': [0, 1], 'x': [0, 1]},
-        ))
+        ),
+            layout=go.Layout(
+                title={
+                    'text': 'Score en IMDb',
+                    'y': 0.9,
+                    'x': 0.5,
+                    'xanchor': 'center',
+                    'yanchor': 'top',
+                    'font': {'size': 25},
+                    'pad': {'b': 20}
+                },
+                font=dict(color='black'),
+                paper_bgcolor='#1f2c56',
+                plot_bgcolor='#1f2c56',
+                height=150,
+            )
+        )
         otros_kpi.update_layout(
-            layout_factory(title="% de consultas sobre otros temas"))
+            layout_factory(title="% de consultas sobre otros temas", color_font="black"))
+
+        consultas_categorizadas = data_preguntas_chatbot[['categoria', 'pregunta']]
+        consultas_categorizadas = consultas_categorizadas.groupby(['categoria']).count()
+        consultas_categorizadas.reset_index(level=0, inplace=True)
+        consultas_categorizadas = consultas_categorizadas.rename(
+            columns={'pregunta': 'Cantidad', 'categoria': "Categorias"})
+        fig_pie_categorias_chatbot = px.pie(consultas_categorizadas, values='Cantidad', names='Categorias')
+        fig_pie_categorias_chatbot.update_traces(textposition='inside', textinfo='percent+label')
+        fig_pie_categorias_chatbot.update_layout(
+            layout_factory(title="Detalle de consultas al chatbot por categoría",color_font="black"))
+        fig_pie_categorias_chatbot.update_layout(legend=dict(
+            yanchor="top",
+            y=0.0,
+            xanchor="left",
+            x=0.0
+        ))
+
+        consultas_especialidad= data_preguntas_chatbot[['especialidad', 'pregunta']]
+        consultas_especialidad = consultas_especialidad.groupby(['especialidad']).count()
+        consultas_especialidad.reset_index(level=0, inplace=True)
+        consultas_especialidad = consultas_especialidad.rename(
+            columns={'pregunta': 'Cantidad', 'especialidad': "Especialidades"})
+        consultas_especialidad.drop([0], inplace=True)
+        fig_pie_especialidad_chatbot = px.pie(consultas_especialidad, values='Cantidad', names='Especialidades')
+        fig_pie_especialidad_chatbot.update_traces(textposition='inside', textinfo='percent+label')
+        fig_pie_especialidad_chatbot.update_layout(
+            layout_factory(title="Detalle de consultas al chatbot por especialidad"))
+        fig_pie_especialidad_chatbot.update_layout(legend=dict(
+            yanchor="top",
+            y=0.0,
+            xanchor="left",
+            x=0.0
+        ))
+
+        # WordCloud Categorias
+        tendencia_categoria = data_preguntas_chatbot["categoria"]
+        #plt.subplots(figsize=(10, 10))
+        word_could_dict = Counter(list(tendencia_categoria))
+        wordcloud = WordCloud(
+            background_color='#D5D0CA',
+            width=750,
+            height=500
+        ).generate_from_frequencies(word_could_dict)
+        wordcloud = wordcloud.to_image()
+        #plt.imshow(wordcloud, interpolation='bilinear')
+        #plt.axis("off")
+        img_categorias = BytesIO()
+        wordcloud.save(img_categorias, format='PNG')
+        src_categorias = 'data:image/png;base64,{}'.format(base64.b64encode(img_categorias.getvalue()).decode())
+
+
+        # WordCloud Especialidades
+        tendencia_especialidad = data_preguntas_chatbot["especialidad"]
+        #plt.subplots(figsize=(10, 10))
+        word_could_dict = Counter(list(tendencia_especialidad))
+        wordcloud = WordCloud(
+            background_color='#D5D0CA',
+            width=750,
+            height=500
+        ).generate_from_frequencies(word_could_dict)
+        wordcloud = wordcloud.to_image()
+        #plt.imshow(wordcloud, interpolation='bilinear')
+        #plt.axis("off")
+        img_especialidad = BytesIO()
+        wordcloud.save(img_especialidad, format='PNG')
+        src_especialidad = 'data:image/png;base64,{}'.format(base64.b64encode(img_especialidad.getvalue()).decode())
+
+        # pie_dias_chatbot
+        cont_lunes = 0
+        cont_martes = 0
+        cont_miercoles = 0
+        cont_jueves = 0
+        cont_viernes = 0
+        cont_sabado = 0
+        cont_domingo = 0
+        for index, row in data_preguntas_chatbot.iterrows():
+            if row["fecha"].weekday() == 0:
+                cont_lunes += 1
+            if row["fecha"].weekday() == 1:
+                cont_martes += 1
+            if row["fecha"].weekday() == 2:
+                cont_miercoles += 1
+            if row["fecha"].weekday() == 3:
+                cont_jueves += 1
+            if row["fecha"].weekday() == 4:
+                cont_viernes += 1
+            if row["fecha"].weekday() == 5:
+                cont_sabado += 1
+            if row["fecha"].weekday() == 6:
+                cont_domingo += 1
+
+        dias = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo']
+        count = [cont_lunes, cont_martes, cont_miercoles, cont_jueves, cont_viernes, cont_sabado, cont_domingo]
+        d = {'Dias': dias, 'Cantidad': count}
+        dff = pd.DataFrame(d)
+        fig_pie_dias_chatbot = px.pie(dff, values='Cantidad', names='Dias', title='Porcentaje de Consulta por Días')
+        fig_pie_dias_chatbot.update_layout(
+            layout_factory(title="Porcentaje de consultas por días de la semana"))
+        fig_pie_dias_chatbot.update_layout(legend=dict(
+            yanchor="top",
+            y=0.0,
+            xanchor="left",
+            x=0.0
+        ))
+
+
+        # KPI Eficacia
+
+        eficacia = eficienciaCB.iloc[1, 0] / (eficienciaCB.iloc[0, 0] + eficienciaCB.iloc[1, 0])
+        eficacia_kpi = go.Figure(data=go.Indicator(
+            mode="number",
+            # delta={'reference': max_likes},
+            value=eficacia * 100,
+            number=dict(
+                suffix=' %',
+                font={'size': 35}),
+            domain={'y': [0, 1], 'x': [0, 1]},
+        ),
+            layout=go.Layout(
+                title={
+                    'text': 'Score en IMDb',
+                    'y': 0.9,
+                    'x': 0.5,
+                    'xanchor': 'center',
+                    'yanchor': 'top',
+                    'font': {'size': 25},
+                    'pad': {'b': 20}
+                },
+                font=dict(color='black'),
+                paper_bgcolor='#1f2c56',
+                plot_bgcolor='#1f2c56',
+                height=150,
+            )
+        )
+        eficacia_kpi.update_layout(
+            layout_factory(title="Tasa de aciertos del chatbot"))
+
 
         return fig_pie_efic_chatbot, fig_fechas_histogram, mean_score_kpi, fig_line_chart_score, costo_kpi, vacante_kpi, \
-               fecha_kpi, tema_kpi, #puntaje_kpi,general_kpi#,otros_kpi
+               fecha_kpi, tema_kpi, puntaje_kpi, general_kpi, otros_kpi, fig_pie_categorias_chatbot, fig_pie_especialidad_chatbot, \
+               src_categorias, src_especialidad, fig_pie_dias_chatbot, eficacia_kpi
 
     return
