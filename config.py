@@ -13,7 +13,7 @@ class Config:
     # General Config
     FLASK_APP = environ.get("FLASK_APP")
     FLASK_ENV = environ.get("FLASK_ENV")
-    # FLASK_APP = "application.py"
+    # FLASK_APP = "wsgi.py"
     # FLASK_ENV = "development"
     SECRET_KEY = environ.get("SECRET_KEY")
     SQLALCHEMY_DATABASE_URI = environ.get("SQLALCHEMY_DATABASE_URI")
