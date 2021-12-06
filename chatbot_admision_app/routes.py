@@ -230,7 +230,7 @@ def predict():
 
     # TODO: bd.save({'pregunta':text,'respuesta':response})
     datos_bd = {'pregunta': text, 'respuesta': response_object}
-    inserta(datos_bd,2) # 1: BD en VPS/ 2: BD local
+    inserta(datos_bd,1) # 1: BD en VPS/ 2: BD local
     message = {"answer": response}
     return jsonify(message)
 

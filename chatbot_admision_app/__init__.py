@@ -9,7 +9,8 @@ db = SQLAlchemy()
 
 def init_app():
     """Construct core Flask application."""
-    app = Flask(__name__, instance_relative_config=False)
+    application = Flask(__name__, instance_relative_config=False)
+    app = application
     app.config.from_object('config.Config')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.init_app(app)
