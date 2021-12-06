@@ -16,7 +16,6 @@ def init_model():
     the_model = 'mrm8488/distill-bert-base-spanish-wwm-cased-finetuned-spa-squad2-es'
     tokenizer = AutoTokenizer.from_pretrained(the_model, do_lower_case=False)
     model = AutoModelForQuestionAnswering.from_pretrained(the_model)
-    # TODO: Cargar contexto aquí
     nlp = pipeline('question-answering', model=model, tokenizer=tokenizer)
     return nlp;
 
@@ -211,7 +210,7 @@ nlp = init_model();
 def get_response(msg):
     response = nlp({'question': msg, 'context': contexto})
     print(response)
-    if response['score'] < 0.0001:  # Cuándo la probabilidad de haber respondido satisfactoriamente sea mayor a 10%
+    if response['score'] < 0.0001: # La probabilidad de haber respondido correctamente es menor que 10%
         response['answer'] = "No estoy muy seguro de mi respuesta"
     return response
 
@@ -224,11 +223,8 @@ def index_get():
 @app.post("/predict")
 def predict():
     text = request.get_json().get("message")
-    # TODO: Validar texto
     response_object = get_response(text)
     response = response_object['answer']
-
-    # TODO: bd.save({'pregunta':text,'respuesta':response})
     datos_bd = {'pregunta': text, 'respuesta': response_object}
     inserta(datos_bd,1) # 1: BD en VPS/ 2: BD local
     message = {"answer": response}
