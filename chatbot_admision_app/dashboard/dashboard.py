@@ -201,7 +201,8 @@ def init_dashboard(server):
                             dcc.Graph(  # figure=fig_duration_box,
                                 className="dcc-compon",
                                 config={'displayModeBar': 'hover'},
-                                id="pie_efic_chatbot")
+                                id="pie_efic_chatbot"),
+
                         ], className="card_container six columns"),
                         html.Div([
                             dcc.Graph(
@@ -218,12 +219,61 @@ def init_dashboard(server):
                             # html.H5("Score de predicción promedio", style={"marginBottom": '0px', 'color': 'black'}),
                             dcc.Graph(id="mean_score_kpi", config={'displayModeBar': False}, className="dcc-compon",
                                       style={'marginTop': '20px'}),
+                            # Semáforo - Convertir a Factory en vez de hardcode
+                            html.Div([
+                                html.Div([
+                                    html.Div([html.H5("Peligro", style={"marginBottom": '0px', 'color': 'black'})],
+                                             className="cell cell-header cell-header-red  card_container four columns"),
+                                    html.Div([html.H5("Alerta", style={"marginBottom": '0px', 'color': 'black'})],
+                                             className="cell cell-header cell-header-yellow  card_container four "
+                                                       "columns"),
+                                    html.Div([html.H5("Correcto", style={"marginBottom": '0px', 'color': 'black'})],
+                                             className="cell cell-header cell-header-green card_container four columns")
+                                ], className="row flex display"
+                                ),
+                                html.Div([
+                                    html.Div([html.H5("< 20%", style={"marginBottom": '0px', 'color': 'red'})],
+                                             className="cell cell-body cell-body-red danger card_container four columns"),
+                                    html.Div([html.H5("20% - 60%", style={"marginBottom": '0px', 'color': '#FCDE22'})],
+                                             className="cell cell-body cell-body-yellow warning card_container four "
+                                                       "columns"),
+                                    html.Div([html.H5("60% <", style={"marginBottom": '0px', 'color': '#109D55'})],
+                                             className="cell cell-body cell-body-green success card_container four columns")
+                                ], className="row flex display"
+                                )
+                            ], className="table row flex display")
                         ], className="card_container six columns", style={'textAlign': 'center'}),
                         # KPI Score Eficacia
                         html.Div([
                             # html.H5("Score de predicción promedio", style={"marginBottom": '0px', 'color': 'black'}),
                             dcc.Graph(id="eficacia_kpi", config={'displayModeBar': False}, className="dcc-compon",
                                       style={'marginTop': '20px'}),
+
+                            # Semáforo
+                            html.Div([
+                                html.Div([
+                                    html.Div([html.H5("Peligro", style={"marginBottom": '0px', 'color': 'black'})],
+                                             className="cell cell-header cell-header-red  card_container four columns"),
+                                    html.Div([html.H5("Alerta", style={"marginBottom": '0px', 'color': 'black'})],
+                                             className="cell cell-header cell-header-yellow  card_container four "
+                                                       "columns"),
+                                    html.Div([html.H5("Correcto", style={"marginBottom": '0px', 'color': 'black'})],
+                                             className="cell cell-header cell-header-green card_container four columns")
+                                ], className="row flex display"
+                                ),
+                                html.Div([
+                                    html.Div([html.H5("< 40%", style={"marginBottom": '0px', 'color': 'red'})],
+                                             className="cell cell-body cell-body-red danger card_container four columns"),
+                                    html.Div([html.H5("40% - 70%", style={"marginBottom": '0px', 'color': '#FCDE22'})],
+                                             className="cell cell-body cell-body-yellow warning card_container four "
+                                                       "columns"),
+                                    html.Div([html.H5("70% <", style={"marginBottom": '0px', 'color': '#109D55'})],
+                                             className="cell cell-body cell-body-green success card_container four columns")
+                                ], className="row flex display"
+                                )
+                            ], className="table row flex display")
+
+
                         ], className="card_container six columns", style={'textAlign': 'center'}),
                     ], className="row flex display"),
 
@@ -326,6 +376,17 @@ def init_dashboard(server):
 
 def init_callback(app):
     # Utilitarias
+
+    def kpi_color(valor,umbral_minimo, umbral_maximo):
+        color = "#E0E0E0"
+        if (valor < umbral_minimo):
+            color ="#FF0000"
+        elif (umbral_minimo < valor < umbral_maximo):
+            color = "#FCDE22"
+        else:
+            color = "#109D55"
+        return color
+
     def clasificador_pregunta(df):
         # Primera columna
         duracion_intent = ["dura", "toma tiempo", "tiempo toma"]
@@ -549,6 +610,7 @@ def init_callback(app):
 
         # KPI: Mean score
         mean_score = data_respuestas_chatbot['score'].mean()
+        color_kpi_mean_score = kpi_color(mean_score,.2,.6)
         mean_score_kpi = go.Figure(data=go.Indicator(
             mode="number",
             # delta={'reference': max_likes},
@@ -568,14 +630,14 @@ def init_callback(app):
                     'font': {'size': 25},
                     'pad': {'b': 20}
                 },
-                font=dict(color='black'),
+                font=dict(color=color_kpi_mean_score),
                 paper_bgcolor='#1f2c56',
                 plot_bgcolor='#1f2c56',
                 height=150,
             )
         )
         mean_score_kpi.update_layout(
-            layout_factory(title="Score de predicción promedio"))
+            layout_factory(title="Score de predicción promedio",color_font=color_kpi_mean_score))
 
         # Line chart score
         x_series = [i for i in range(0, len(list(data_respuestas_chatbot['answer'])))]
@@ -913,6 +975,7 @@ def init_callback(app):
         # KPI Eficacia
 
         eficacia = eficienciaCB.iloc[1, 0] / (eficienciaCB.iloc[0, 0] + eficienciaCB.iloc[1, 0])
+        color_kpi_eficacia = kpi_color(eficacia,.4,.7)
         eficacia_kpi = go.Figure(data=go.Indicator(
             mode="number",
             # delta={'reference': max_likes},
@@ -932,14 +995,14 @@ def init_callback(app):
                     'font': {'size': 25},
                     'pad': {'b': 20}
                 },
-                font=dict(color='black'),
+                font=dict(color=color_kpi_eficacia),
                 paper_bgcolor='#1f2c56',
                 plot_bgcolor='#1f2c56',
                 height=150,
             )
         )
         eficacia_kpi.update_layout(
-            layout_factory(title="Tasa de aciertos del chatbot"))
+            layout_factory(title="Tasa de aciertos del chatbot",color_font=color_kpi_eficacia))
 
 
         return fig_pie_efic_chatbot, fig_fechas_histogram, mean_score_kpi, fig_line_chart_score, costo_kpi, vacante_kpi, \

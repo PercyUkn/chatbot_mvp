@@ -123,3 +123,32 @@ font-size: 20px;
 .navbar-brand {
   font-size: 2rem
 }
+
+.cell {
+  margin: 0px !important;
+  display: table-cell;
+  border: 1px solid black;
+}
+
+.table {
+        display: table;
+        /*border: 1px solid black;*/
+        margin: 5px;
+        padding-left: 8%;
+        /*display: table时padding会失效*/
+    }
+
+.cell-body {
+  background-color: #A7A5A9 !important;
+}
+.cell-header-red{
+  background-color: red !important;
+}
+
+.cell-header-yellow{
+  background-color: #FCDE22 !important;
+}
+
+.cell-header-green{
+  background-color: #109D55 !important;
+}
